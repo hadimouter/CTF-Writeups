@@ -1,7 +1,7 @@
 # CTF Writeups by 0xMalt
 
 ## 🎯 Stats TryHackMe
-- **Rank:** Top 15%
+- **Rank:** Top 9%
 - **Completed rooms:** 60
 - **Streak:** 18 jours
 - **Profile:** [tryhackme.com/p/0xMalt](https://tryhackme.com/p/0xMalt)
