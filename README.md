@@ -2,14 +2,15 @@
 
 ## 🎯 Stats TryHackMe
 - **Rank:** Top 9%
-- **Completed rooms:** 60
-- **Streak:** 18 jours
+- **Completed rooms:** 61
+- **Streak:** 19 jours
 - **Profile:** [tryhackme.com/p/0xMalt](https://tryhackme.com/p/0xMalt)
 
 ## 📝 Writeups
 
 ### TryHackMe - Easy
 - [Hydra](TryHackMe/Easy/Hydra/writeup.md) - Password brute forcing avec Hydra (29 mars 2026)
+- [Gobuster](TryHackMe/Easy/Gobuster/writeup.md) - Énumération web, DNS et vhost avec Gobuster (30 mars 2026)
 
 ## 🛠️ Methodology
 
