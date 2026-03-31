@@ -1,70 +1,70 @@
 # Hydra - TryHackMe
 
-**Difficulté :** Easy
-**OS :** Linux
-**Date :** 29 mars 2026
-**Temps :** ~1h30
-**Lien room :** https://tryhackme.com/room/hydra
+**Difficulty:** Easy
+**OS:** Linux
+**Date:** March 29, 2026
+**Time:** ~1h30
+**Room link:** https://tryhackme.com/room/hydra
 
 ---
 
-## 🎯 Objectif
+## 🎯 Objective
 
-Apprendre à utiliser Hydra pour bruteforcer des credentials sur différents services (Web form & SSH).
+Learn how to use Hydra to brute force credentials on different services (Web form & SSH).
 
 ---
 
 ## 🔍 Reconnaissance
 
-### Scan Nmap
+### Nmap Scan
 
 ```bash
 nmap -p- 10.128.129.124
 ```
 
-**Résultats :**
-- Port 22 : SSH
-- Port 80 : HTTP
+**Results:**
+- Port 22: SSH
+- Port 80: HTTP
 
-![Scan Nmap](screenshots/nmap.png)
+![Nmap Scan](screenshots/nmap.png)
 
-### Énumération Web
+### Web Enumeration
 
-Navigation vers `http://10.128.129.124/login`
+Navigating to `http://10.128.129.124/login`
 
 ![Login page](screenshots/login-page.png)
 
-Test de credentials basiques → échec.
-Pas de vulnérabilité SQL injection apparente.
+Testing basic credentials → failed.
+No apparent SQL injection vulnerability.
 
-**Conclusion :** Brute force nécessaire.
+**Conclusion:** Brute force required.
 
 ---
 
-## 💥 Task 1 - Brute force Web Password
+## 💥 Task 1 - Web Password Brute Force
 
-### Localisation de rockyou.txt
+### Locating rockyou.txt
 
 ```bash
 find / -name "rockyou.txt" 2>/dev/null
 ```
 
-**Résultat :** `/usr/share/wordlists/rockyou.txt`
+**Result:** `/usr/share/wordlists/rockyou.txt`
 
-![Recherche rockyou](screenshots/find-rockyou.png)
+![Finding rockyou](screenshots/find-rockyou.png)
 
-### Analyse de la requête HTTP
+### HTTP Request Analysis
 
-Inspection du formulaire de login → Méthode POST
+Inspecting the login form → POST method
 
-**Paramètres :**
+**Parameters:**
 - username=^USER^
 - password=^PASS^
-- Message d'erreur : "Your username or password is incorrect"
+- Error message: "Your username or password is incorrect"
 
 ![Burp Suite](screenshots/burp-suite.png)
 
-### Brute force avec Hydra
+### Brute Force with Hydra
 
 ```bash
 hydra -l molly -P /usr/share/wordlists/rockyou.txt 10.128.129.124 http-post-form "/login:username=^USER^&password=^PASS^:F=Your username or password is incorrect." -V
@@ -72,21 +72,21 @@ hydra -l molly -P /usr/share/wordlists/rockyou.txt 10.128.129.124 http-post-form
 
 ![Hydra Web](screenshots/hydra-web.png)
 
-**Credentials trouvés :** `molly:sunshine`
+**Credentials found:** `molly:sunshine`
 
-### Récupération du Flag 1
+### Retrieving Flag 1
 
-Connexion avec les credentials → Flag 1 affiché
+Login with the credentials → Flag 1 displayed
 
 ![Flag 1](screenshots/flag1.png)
 
-**Flag 1 :** `THM{2673a7dd116de68e85c48ec0b1f2612e}`
+**Flag 1:** `THM{2673a7dd116de68e85c48ec0b1f2612e}`
 
 ---
 
-## 🚀 Task 2 - Brute force SSH Password
+## 🚀 Task 2 - SSH Password Brute Force
 
-### Brute force SSH avec Hydra
+### SSH Brute Force with Hydra
 
 ```bash
 hydra -l molly -P /usr/share/wordlists/rockyou.txt 10.128.129.124 -t 4 ssh
@@ -94,9 +94,9 @@ hydra -l molly -P /usr/share/wordlists/rockyou.txt 10.128.129.124 -t 4 ssh
 
 ![Hydra SSH](screenshots/hydra-ssh.png)
 
-**Credentials trouvés :** `molly:butterfly`
+**Credentials found:** `molly:butterfly`
 
-### Connexion SSH
+### SSH Connection
 
 ```bash
 ssh molly@10.128.129.124
@@ -104,7 +104,7 @@ ssh molly@10.128.129.124
 
 ![SSH Connection](screenshots/ssh-connection.png)
 
-### Récupération du Flag 2
+### Retrieving Flag 2
 
 ```bash
 whoami
@@ -115,41 +115,41 @@ cat flag2.txt
 
 ![Flag 2](screenshots/flag2.png)
 
-**Flag 2 :** `THM{c8eeb0468febbadea859baeb33b2541b}`
+**Flag 2:** `THM{c8eeb0468febbadea859baeb33b2541b}`
 
 ---
 
-## 📚 Ce que j'ai appris
+## 📚 What I Learned
 
-1. **Hydra est un outil puissant** pour le brute force de credentials sur différents protocoles (HTTP, SSH, FTP, etc.)
+1. **Hydra is a powerful tool** for credential brute forcing across different protocols (HTTP, SSH, FTP, etc.)
 
-2. **L'importance de la syntaxe** : La commande `http-post-form` nécessite une structure précise avec les paramètres `^USER^` et `^PASS^`
+2. **Syntax matters**: The `http-post-form` command requires a precise structure with `^USER^` and `^PASS^` parameters
 
-3. **Le paramètre `-t`** contrôle le nombre de threads parallèles (important pour éviter de surcharger le serveur cible)
+3. **The `-t` flag** controls the number of parallel threads (important to avoid overwhelming the target server)
 
-4. **Wordlists efficaces** : rockyou.txt contient +14 millions de passwords et reste une référence pour le brute force
+4. **Effective wordlists**: rockyou.txt contains 14M+ passwords and remains a reference for brute forcing
 
 ---
 
-## 🛠️ Outils utilisés
+## 🛠️ Tools Used
 
 - Nmap (reconnaissance)
 - Hydra (brute force)
-- Burp Suite (analyse HTTP)
-- SSH (connexion)
+- Burp Suite (HTTP analysis)
+- SSH (connection)
 
 ---
 
-## 💡 Recommandations de sécurité
+## 💡 Security Recommendations
 
-Pour se protéger de ce type d'attaque :
+To protect against this type of attack:
 
-1. **Rate limiting** : Limiter le nombre de tentatives de connexion
-2. **Account lockout** : Bloquer temporairement après X échecs
-3. **Strong passwords** : Éviter les mots du dictionnaire
-4. **2FA/MFA** : Ajouter une couche d'authentification supplémentaire
-5. **Monitoring** : Alerter sur les tentatives de brute force
+1. **Rate limiting**: Limit the number of login attempts
+2. **Account lockout**: Temporarily block after X failed attempts
+3. **Strong passwords**: Avoid dictionary words
+4. **2FA/MFA**: Add an extra authentication layer
+5. **Monitoring**: Alert on brute force attempts
 
 ---
 
-*Writeup by 0xMalt - TryHackMe Profile : https://tryhackme.com/p/0xMalt*
+*Writeup by 0xMalt - TryHackMe Profile: https://tryhackme.com/p/0xMalt*

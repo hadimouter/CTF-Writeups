@@ -1,26 +1,26 @@
 # Gobuster: The Basics - TryHackMe
 
-**Difficulté :** Easy
-**OS :** Linux
-**Date :** 30 mars 2026
-**Temps :** ~1h30
-**Lien room :** https://tryhackme.com/room/gobusteruf
+**Difficulty:** Easy
+**OS:** Linux
+**Date:** March 30, 2026
+**Time:** ~1h30
+**Room link:** https://tryhackme.com/room/gobusteruf
 
 ---
 
-## 🎯 Objectif
+## 🎯 Objective
 
-Introduction à Gobuster, un outil d'énumération offensive pour découvrir des répertoires web, fichiers, sous-domaines DNS et virtual hosts.
+Introduction to Gobuster, an offensive enumeration tool for discovering web directories, files, DNS subdomains and virtual hosts.
 
 ---
 
 ## 📚 Introduction
 
-Gobuster est un outil open-source écrit en Go utilisé pour l'énumération de :
-- Répertoires et fichiers web (mode `dir`)
-- Sous-domaines DNS (mode `dns`)
-- Virtual hosts (mode `vhost`)
-- Buckets S3 Amazon
+Gobuster is an open-source tool written in Go used for enumerating:
+- Web directories and files (`dir` mode)
+- DNS subdomains (`dns` mode)
+- Virtual hosts (`vhost` mode)
+- Amazon S3 buckets
 
 ![Room Info](screenshots/room-info.png)
 
@@ -28,62 +28,62 @@ Gobuster est un outil open-source écrit en Go utilisé pour l'énumération de 
 
 ## 💥 Task 4 - Directory & File Enumeration
 
-### Question 1 : Flag pour skip TLS verification ?
+### Question 1: Flag to skip TLS verification?
 
-**Réponse :** `--no-tls-validation`
+**Answer:** `--no-tls-validation`
 
-### Énumération des répertoires
+### Directory Enumeration
 
 ```bash
 gobuster dir -u "http://www.offensivetools.thm" -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt
 ```
 
-**Découverte :**
+**Discovered:**
 - `/images` (Status: 301)
 - `/home` (Status: 200)
 - `/media` (Status: 301)
-- `/secret` (Status: 301) ← Répertoire suspect
+- `/secret` (Status: 301) ← Suspicious directory
 
 ![Directory Enumeration](screenshots/dir-enum-1.png)
 
-### Question 2 : Quel répertoire attire l'attention ?
+### Question 2: Which directory catches your attention?
 
-**Réponse :** `secret`
+**Answer:** `secret`
 
-### Énumération avec extension .js
+### Enumeration with .js extension
 
 ```bash
 gobuster dir -u "http://www.offensivetools.thm/secret" -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x .js
 ```
 
-**Découverte :**
+**Discovered:**
 - `/flag.js` (Status: 200)
 
 ![JS File Discovery](screenshots/dir-enum-2.png)
 
-### Question 3 : Flag dans le fichier .js ?
+### Question 3: Flag found in the .js file?
 
-Navigation vers `http://www.offensivetools.thm/secret/flag.js`
+Navigating to `http://www.offensivetools.thm/secret/flag.js`
 
 ![Flag Found](screenshots/flag.png)
 
-**Flag :** `THM{ReconWasASuccess}`
+**Flag:** `THM{ReconWasASuccess}`
 
 ---
 
 ## 🌐 Task 5 - DNS Subdomain Enumeration
 
-### Question 1 : Flag shorthand obligatoire ?
+### Question 1: Required shorthand flag?
 
-**Réponse :** `-d`
+**Answer:** `-d`
 
-### Énumération des sous-domaines
+### Subdomain Enumeration
 
 ```bash
 gobuster dns -d offensivetools.thm -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt
 ```
 
-**Résultats :**
+**Results:**
 - `www.offensivetools.thm`
 - `forum.offensivetools.thm`
 - `store.offensivetools.thm`
@@ -91,21 +91,21 @@ gobuster dns -d offensivetools.thm -w /usr/share/wordlists/SecLists/Discovery/DN
 
 ![DNS Enumeration](screenshots/dns-enum.png)
 
-### Question 2 : Nombre de sous-domaines ?
+### Question 2: Number of subdomains?
 
-**Réponse :** `4`
+**Answer:** `4`
 
 ---
 
 ## 🖥️ Task 6 - Virtual Host Enumeration
 
-### Énumération des vhosts
+### Vhost Enumeration
 
 ```bash
 gobuster vhost -u "http://10.129.141.28" --domain example.thm -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt --append-domain --exclude-length 250-320
 ```
 
-**Résultats (Status 200) :**
+**Results (Status 200):**
 - `shop.example.thm`
 - `blog.example.thm`
 - `academy.example.thm`
@@ -113,47 +113,47 @@ gobuster vhost -u "http://10.129.141.28" --domain example.thm -w /usr/share/word
 
 ![Vhost Enumeration](screenshots/vhost-enum.png)
 
-### Question 1 : Nombre de vhosts répondant 200 ?
+### Question 1: Number of vhosts responding with 200?
 
-**Réponse :** `4`
-
----
-
-## 📚 Ce que j'ai appris
-
-1. **Gobuster a 3 modes principaux** : `dir`, `dns`, `vhost` pour différents types d'énumération
-
-2. **Extensions sont cruciales** : Le flag `-x` permet de découvrir des fichiers cachés (.js, .php, .txt, etc.)
-
-3. **Wordlists adaptées** : Utiliser des wordlists spécifiques selon le contexte (directories, DNS, subdomains)
-
-4. **Filtrage des faux positifs** : `--exclude-length` est essentiel pour éliminer les réponses similaires en vhost enumeration
-
-5. **Méthode systématique** : L'énumération révèle souvent des vecteurs d'attaque cachés (subdomains oubliés, fichiers de debug, etc.)
+**Answer:** `4`
 
 ---
 
-## 🛠️ Outils utilisés
+## 📚 What I Learned
+
+1. **Gobuster has 3 main modes**: `dir`, `dns`, `vhost` for different enumeration types
+
+2. **Extensions are crucial**: The `-x` flag uncovers hidden files (.js, .php, .txt, etc.)
+
+3. **Adapted wordlists**: Use context-specific wordlists (directories, DNS, subdomains)
+
+4. **Filtering false positives**: `--exclude-length` is essential to eliminate similar responses in vhost enumeration
+
+5. **Systematic method**: Enumeration often reveals hidden attack vectors (forgotten subdomains, debug files, etc.)
+
+---
+
+## 🛠️ Tools Used
 
 - Gobuster v3.6
-- Wordlists : dirbuster, SecLists
-- Burp Suite (analyse HTTP)
+- Wordlists: dirbuster, SecLists
+- Burp Suite (HTTP analysis)
 
 ---
 
-## 💡 Recommandations de sécurité
+## 💡 Security Recommendations
 
-Pour se protéger de l'énumération :
+To protect against enumeration:
 
-1. **Désactiver directory listing** : Configuration serveur web
-2. **Fichiers sensibles hors web root** : Ne jamais exposer de fichiers de debug/config
-3. **Rate limiting** : Limiter les requêtes pour détecter les scans
-4. **WAF** : Détecter et bloquer les patterns d'énumération
-5. **Monitoring** : Alerter sur les accès 404 répétés
-6. **Sous-domaines** : Vérifier que tous les subdomains sont patchés au même niveau
+1. **Disable directory listing**: Web server configuration
+2. **Sensitive files outside web root**: Never expose debug/config files
+3. **Rate limiting**: Limit requests to detect scans
+4. **WAF**: Detect and block enumeration patterns
+5. **Monitoring**: Alert on repeated 404 access attempts
+6. **Subdomains**: Ensure all subdomains are patched to the same level
 
 ---
 
 ![Completion](screenshots/completion.png)
 
-*Writeup by 0xMalt - TryHackMe Profile : https://tryhackme.com/p/0xMalt*
+*Writeup by 0xMalt - TryHackMe Profile: https://tryhackme.com/p/0xMalt*

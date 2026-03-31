@@ -1,25 +1,26 @@
 # CTF Writeups by 0xMalt
 
-## 🎯 Stats TryHackMe
+## 🎯 TryHackMe Stats
 - **Rank:** Top 9%
-- **Completed rooms:** 61
-- **Streak:** 19 jours
+- **Completed rooms:** 66
+- **Streak:** 20 days
 - **Profile:** [tryhackme.com/p/0xMalt](https://tryhackme.com/p/0xMalt)
 
 ## 📝 Writeups
 
 ### TryHackMe - Easy
-- [Hydra](TryHackMe/Easy/Hydra/writeup.md) - Password brute forcing avec Hydra (29 mars 2026)
-- [Gobuster](TryHackMe/Easy/Gobuster/writeup.md) - Énumération web, DNS et vhost avec Gobuster (30 mars 2026)
+- [Hydra](TryHackMe/Easy/Hydra/writeup.md) - Password brute forcing with Hydra (March 29, 2026)
+- [Gobuster](TryHackMe/Easy/Gobuster/writeup.md) - Web, DNS and vhost enumeration with Gobuster (March 30, 2026)
+- [Shells Overview](TryHackMe/Easy/ShellsOverview/writeup.md) - Reverse Shell, Bind Shell and Web Shell (March 31, 2026)
 
 ## 🛠️ Methodology
 
-Mon approche pour chaque machine :
+My approach for each machine:
 
-1. **Reconnaissance** → Nmap, énumération de services, identification de technologies
-2. **Exploitation** → Recherche de vulnérabilités, exploitation, obtention d'accès initial
-3. **Post-exploitation** → Élévation de privilèges, lateral movement, persistence
-4. **Documentation** → Writeup détaillé + leçons apprises + recommandations de sécurité
+1. **Reconnaissance** → Nmap, service enumeration, technology identification
+2. **Exploitation** → Vulnerability research, exploitation, initial access
+3. **Post-exploitation** → Privilege escalation, lateral movement, persistence
+4. **Documentation** → Detailed writeup + lessons learned + security recommendations
 
 ## 📫 Contact
 
@@ -30,4 +31,4 @@ Mon approche pour chaque machine :
 
 ---
 
-*Étudiant Master Cybersécurité @ Oteria | DevSecOps en devenir | Ex-Dev Full-Stack 3 ans*
+*Master's student in Cybersecurity @ Oteria | Aspiring DevSecOps | Former Full-Stack Dev 3 years*
