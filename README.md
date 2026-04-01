@@ -2,8 +2,8 @@
 
 ## 🎯 TryHackMe Stats
 - **Rank:** Top 9%
-- **Completed rooms:** 66
-- **Streak:** 20 days
+- **Completed rooms:** 67
+- **Streak:** 21 days
 - **Profile:** [tryhackme.com/p/0xMalt](https://tryhackme.com/p/0xMalt)
 
 ## 📝 Writeups
@@ -12,6 +12,7 @@
 - [Hydra](TryHackMe/Easy/Hydra/writeup.md) - Password brute forcing with Hydra (March 29, 2026)
 - [Gobuster](TryHackMe/Easy/Gobuster/writeup.md) - Web, DNS and vhost enumeration with Gobuster (March 30, 2026)
 - [Shells Overview](TryHackMe/Easy/ShellsOverview/writeup.md) - Reverse Shell, Bind Shell and Web Shell (March 31, 2026)
+- [SQLMap](TryHackMe/Easy/SQLMap/writeup.md) - Automated SQL injection exploitation with SQLMap (April 1, 2026)
 
 ## 🛠️ Methodology
 
